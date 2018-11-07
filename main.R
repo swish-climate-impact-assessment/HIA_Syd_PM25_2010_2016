@@ -4,7 +4,7 @@
 
 #### settings ####
 datadir <- "/home/public_share_data/ResearchData_CAR/Environment_General"
-projdir <- "~/ownCloud/projects_transfers/HIA_Health_Impact_Assessments/HIA_Syd_PM25_2010_2016"
+projdir <- "SET THIS FIRST"
 setwd(projdir)
 dir.create("working_temporary")
 dir.create("data_derived")
@@ -46,7 +46,7 @@ str(indat_dth_sa2V2@data)
 indat_dth_sa2V3 <- indat_dth_sa2V2[indat_dth_sa2V2@data$GCC_NAME16 == "Greater Sydney",]
 
 ## visualise with QGIS
-writeOGR(indat_dth_sa2V3, "working_temporary", 
+writeOGR(indat_dth_sa2V3, "working_temporary",
          sprintf("indat_dth_sa2V3_%s", state),
          driver = "ESRI Shapefile", overwrite_layer = T)
 
@@ -72,7 +72,7 @@ source("code/do_kriging.R")
 #### 4: SEIFA ####
 indir_seifa <- file.path(datadir, "ABS_data/ABS_SEIFA/ABS_SEIFA_2011_SA2_data_derived")
 dir(indir_seifa)
-infile_seifa <- "ABS_SEIFA_2011_IRSD_SA2.csv" 
+infile_seifa <- "ABS_SEIFA_2011_IRSD_SA2.csv"
 indat_seifa <- read.csv(file.path(indir_seifa, infile_seifa))
 str(indat_seifa)
 
@@ -80,7 +80,7 @@ str(indat_seifa)
 indir_sa2_2011 <- file.path(datadir, "ABS_data/ABS_Census_2011/abs_sa2_2011_data_provided")
 dir(indir_sa2_2011)
 infile_sa2_2011 <- "SA2_2011_AUST"
-indat_sa2_2011 <- readOGR(indir_sa2_2011, infile_sa2_2011)  
+indat_sa2_2011 <- readOGR(indir_sa2_2011, infile_sa2_2011)
 str(indat_sa2_2011@data)
 ## match name to join
 indat_sa2_2011@data$sa2 <- as.numeric(as.character(indat_sa2_2011@data$SA2_MAIN11))
@@ -98,7 +98,7 @@ indat_dth_sa2V4 <- indat_dth_sa2V3
 indat_dth_sa2V4@data <- cbind(indat_dth_sa2V3@data, pm25)
 str(indat_dth_sa2V4@data)
 
-## merge with seifa 
+## merge with seifa
 pts <- rgeos::gCentroid(indat_dth_sa2V4, byid = T)
 plot(pts)
 ptsV2 <- sp::over(pts, indat_sa2_2011V2)
